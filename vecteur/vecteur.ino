@@ -10,6 +10,10 @@ int index = 0;
 int x = 3;
 int y = 4;
 
+void compareX(int xCD){
+	int xCompared
+}
+
 int getCoordinatesX(char c) {
   for (int i = 0; i < sizeof(mapFromUs); i++) {
     for (int j = 0; j < sizeof(mapFromUs[i]); j++) {
@@ -81,18 +85,10 @@ void setup() {
 
 void loop() {
   // Définit le trajet entre une destination i et i+1
-  char a = destination[index];
-  int xA;
-  int yA;
+  char currentDestination = destination[index];
+  int xCD = getCoordinatesX(currentDestination);
+  int yCD = getCoordinatesY(currentDestination);
 
-  for (int i = 0; i < sizeof(mapFromUs); i++) {
-    for (int j = 0; j < sizeof(mapFromUs[i]); j++) {
-      if (mapFromUs[i][j] == a) {
-        xA = i;
-        yA = j;
-      }
-    }
-  }
 
   // Comparaison de nos coordonnées avec celles du point de destination
 
