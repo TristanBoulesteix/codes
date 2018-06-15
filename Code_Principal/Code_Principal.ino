@@ -117,7 +117,9 @@ void state() {
       statut == PROBLEM;
     }
   }  else if ( statut == CORRECT) {
-
+	  if (statutT == RIGHT){
+		  turnRight();
+	  }
   }
 }
 
@@ -134,8 +136,7 @@ void setup() {
 }
 
 
-void loop()
-{
+void loop() {
   state ();
 }
 
