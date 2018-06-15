@@ -4,8 +4,8 @@
 
 int signalPinC1 = 8;
 int signalPinC2 = 4;
-int signalPinLg = 6;
-int signalPinLd = 2;
+int signalPinLg = 7;
+int signalPinLd = 6;
 
 void setup() {
   Motor.begin(I2C_ADDRESS);
