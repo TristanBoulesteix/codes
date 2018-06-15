@@ -32,7 +32,7 @@ int getCoordinatesX(char c) {
   for (int i = 0; i < sizeof(mapFromUs); i++) {
     for (int j = 0; j < sizeof(mapFromUs[i]); j++) {
       if (mapFromUs[i][j] == c) {
-        return i;
+        return i, j;
       }
     }
   }

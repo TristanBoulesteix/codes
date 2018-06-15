@@ -14,30 +14,34 @@ void setup() {
   pinMode(signalPinC2, INPUT);
   pinMode(signalPinLg, INPUT);
   pinMode(signalPinLd, INPUT);
-  
+  delay(200);
 }
 
 void loop() {
-  delay(200);
   if (digitalRead(signalPinC1)== HIGH && digitalRead(signalPinC2)== HIGH){
     Serial.println("Tout Droit");
-    //moveForward();
-    //turnRight();
+    moveForward();
   }
   
   if (digitalRead(signalPinC1)== HIGH && digitalRead(signalPinC2)== LOW){
     Serial.println("A gauche");
+    turnLeft();
   }
   
   if (digitalRead(signalPinC1)== LOW && digitalRead(signalPinC2)== HIGH){
     Serial.println("A droite");
+    turnRight();
   }
+  if (digitalRead(signalPinC1)== LOW && digitalRead(signalPinC2)== LOW){
+    stopMotors();
+  }
+  
 }
 
 void moveForward() {
   Motor.speed(MOTOR1, 100);
   Motor.speed(MOTOR2, 88);
-  delay(2200);
+  
 }
 
 void stopMotors() {
@@ -45,13 +49,13 @@ void stopMotors() {
   Motor.stop(MOTOR2);
 }
 
-void turnLeft() {
-  Motor.speed(MOTOR1, -100);
-  delay(535);
+void turnRight() {
+  Motor.speed(MOTOR1, 100);
+  Motor.speed(MOTOR2, 28);
 }
 
-void turnRight() {
-  Motor.speed(MOTOR2, -88);
-  delay(515);
+void turnLeft() {
+  Motor.speed(MOTOR1, 40);
+  Motor.speed(MOTOR2, 88);
 }
 
