@@ -44,31 +44,37 @@ int getNextLeftDirection(int direction) {
 void moveForward() {
   Motor.speed(MOTOR1, 50);
   Motor.speed(MOTOR2, 44);
+  Serial.println("moveForward");
 }
 
 void stopMotors() {
   Motor.stop(MOTOR1);
   Motor.stop(MOTOR2);
+  Serial.println("stop");
 }
 
 void correctRight() {
   Motor.speed(MOTOR1, 50);
   Motor.speed(MOTOR2, 14);
+  Serial.println("CR");
 }
 
 void correctLeft() {
   Motor.speed(MOTOR1, 20);
   Motor.speed(MOTOR2, 44);
+  Serial.println("CL");
 }
 
 void turnLeft() {
   Motor.speed(MOTOR1, -50);
   Motor.speed(MOTOR2, 44);
+  Serial.println("TL");
 }
 
 void turnRight() {
   Motor.speed(MOTOR1, 50);
   Motor.speed(MOTOR2, -44);
+  Serial.println("TR");
 }
 
 void state() {
@@ -76,6 +82,7 @@ void state() {
     if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {
       //a long terme passé cette possibilité à recherche de ligne
       statut = STRAIGHT;
+      moveForward();
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
       // etat de redressement sur la ligne DROITE
       statut = CORRECT;
@@ -91,12 +98,14 @@ void state() {
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
       // avancement normal
       statut = STRAIGHT;
+      moveForward();
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == HIGH) {
       //etat de direction aléatoire entre tout droit et à droite
       int randomNumber = random(0, 1);
 
       if (randomNumber == 0) {
         statut = STRAIGHT;
+        moveForward();
       } else if (randomNumber == 1) {
         statut = TURN;
         statutT = RIGHT;
@@ -145,7 +154,7 @@ void state() {
     } else {
       statut = PROBLEM;
     }
-	
+
   } else if (statut == TURN) {
     if (statutT == RIGHT) {
       turnRight();
@@ -166,6 +175,8 @@ void state() {
         turnRight();
       }
     }
+  } else {
+    stopMotors();
   }
 }
 
