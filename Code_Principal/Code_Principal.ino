@@ -196,5 +196,6 @@ void setup() {
 
 void loop() {
   state ();
+  Serial.print(statut + " ");
 }
 
