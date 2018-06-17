@@ -54,7 +54,7 @@ void loop() {
     Serial.println("A droite");
     correctRight();
   }
-  if (digitalRead(signalPinLg)==LOW && signalPinC1)== LOW && digitalRead(signalPinC2)== LOW && digitalRead(signalPinLg)==LOW){
+  if (digitalRead(signalPinLg)==LOW && signalPinC1== LOW && digitalRead(signalPinC2)== LOW && digitalRead(signalPinLg)==LOW){
     Serial.println("Stop Machine");
     stopMotors();
   }
