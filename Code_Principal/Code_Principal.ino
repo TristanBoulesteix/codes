@@ -78,7 +78,7 @@ void turnRight() {
 }
 
 void state() {
-  if (statut == STRAIGHT) {
+  while (statut == STRAIGHT) {
     if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {
       //a long terme passé cette possibilité à recherche de ligne
       statut = STRAIGHT;
@@ -144,6 +144,7 @@ void state() {
         statutT = RIGHT;
       } else if (randomNumber == 1) {
         statut = STRAIGHT;
+        moveForward();
       } else if (randomNumber == 2) {
         statut = TURN;
         statutT = LEFT;
@@ -155,7 +156,9 @@ void state() {
       statut = PROBLEM;
     }
 
-  } else if (statut == TURN) {
+  } 
+ /*______________________________________________________________________________________________________________________________________________*/
+  while (statut == TURN) {
     if (statutT == RIGHT) {
       turnRight();
 
@@ -171,7 +174,9 @@ void state() {
         statut == PROBLEM;
       }
     }
-  }  else if ( statut == CORRECT) {
+  }  
+/*______________________________________________________________________________________________________________________________________________*/
+ while ( statut == CORRECT) {
     if (statutT == RIGHT) {
       turnRight();
     } else if (statutT == LEFT) {
@@ -180,8 +185,10 @@ void state() {
 
     statut == STRAIGHT;
     Serial.print(statut);
-  } else {
-    stopMotors();
+  }
+/*______________________________________________________________________________________________________________________________________________*/
+while (statut == PROBLEM){
+  stopMotors();
   }
 }
 
