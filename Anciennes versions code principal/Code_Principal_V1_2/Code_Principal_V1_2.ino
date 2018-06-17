@@ -14,19 +14,33 @@ void moveForward() {
 
 }
 
-void stopMotors() {
-  Motor.stop(MOTOR1);
-  Motor.stop(MOTOR2);
-}
-
 void correctRight() {
   Motor.speed(MOTOR1, 50);
-  Motor.speed(MOTOR2, 12);
+  Motor.speed(MOTOR2, 14);
+  Serial.println("CR");
 }
 
 void correctLeft() {
   Motor.speed(MOTOR1, 20);
   Motor.speed(MOTOR2, 44);
+  Serial.println("CL");
+}
+
+void stopMotors() {
+  Motor.stop(MOTOR1);
+  Motor.stop(MOTOR2);
+}
+
+void turnLeft() {
+  Motor.speed(MOTOR1, -50);
+  Motor.speed(MOTOR2, 44);
+  Serial.println("TL");
+}
+
+void turnRight() {
+  Motor.speed(MOTOR1, 50);
+  Motor.speed(MOTOR2, -44);
+  Serial.println("TR");
 }
 
 void setup() {
@@ -62,7 +76,7 @@ void loop() {
 
   if (digitalRead(signalPinLg) == LOW && signalPinC1 == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLg) == HIGH) {
     Serial.println("TR");
-    correctRight();
+    turnRight();
   }
 
 }
