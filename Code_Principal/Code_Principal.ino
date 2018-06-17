@@ -17,7 +17,7 @@ const int CORRECT = 400;
 int signalPinC1 = 8;
 int signalPinC2 = 4;
 int signalPinLg = 6;
-int signalPinLd = 2;
+int signalPinLd = 7;
 int statut = STRAIGHT;
 int statutT;
 
@@ -90,6 +90,7 @@ void state() {
       statutT = RIGHT;
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {
       // etat de redressement sur la ligne GAUCHE
+      Serial.println("Hello");
       statut = CORRECT;
       statutT = LEFT;
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == HIGH) {
