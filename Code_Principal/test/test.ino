@@ -17,7 +17,7 @@ const int CORRECT = 400;
 int signalPinC1 = 8;
 int signalPinC2 = 4;
 int signalPinLg = 6;
-int signalPinLd = 2;
+int signalPinLd = 7;
 int statut = STRAIGHT;
 int statutT;
 
@@ -82,7 +82,7 @@ void state() {
   if (statut == STRAIGHT) {
     if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {
       //a long terme passé cette possibilité à recherche de ligne
-       Serial.println("recherche de ligne");
+      Serial.println("recherche de ligne");
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
       // etat de redressement sur la ligne DROITE
       Serial.println("redressement droit");
@@ -112,21 +112,21 @@ void state() {
       //set le statutT à LEFT ou RIGHT uniquement si TURN est selectionné
       Serial.println("gauche tout droit droite");
 
-  }
-  /*______________________________________________________________________________________________________________________________________________*/
-  if (statut == TURN) {
-    Serial.println("turn");
-  }
-  /*______________________________________________________________________________________________________________________________________________*/
-  if ( statut == CORRECT) {
-    iSerial.println("correct");
-  }
-  /*______________________________________________________________________________________________________________________________________________*/
-  if (statut == PROBLEM) {
-    stopMotors();
+    }
+    /*______________________________________________________________________________________________________________________________________________*/
+    if (statut == TURN) {
+      Serial.println("turn");
+    }
+    /*______________________________________________________________________________________________________________________________________________*/
+    if ( statut == CORRECT) {
+      Serial.println("correct");
+    }
+    /*______________________________________________________________________________________________________________________________________________*/
+    if (statut == PROBLEM) {
+      stopMotors();
+    }
   }
 }
-
 
 
 void setup() {
