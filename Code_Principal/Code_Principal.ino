@@ -170,10 +170,17 @@ void state() {
       } else {
         statut == PROBLEM;
       }
-    }  else if ( statut == CORRECT) {
-      if (statutT == RIGHT) {
-        turnRight();
-      }
+    }
+  }  else if ( statut == CORRECT) {
+    if (statutT == RIGHT) {
+      turnRight();
+    } else if (statutT == LEFT) {
+      turnLeft();
+    }
+
+    if (digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH) {
+      moveForward();
+      statut == STRAIGHT;
     }
   } else {
     stopMotors();
@@ -196,6 +203,6 @@ void setup() {
 
 void loop() {
   state ();
-  Serial.print(statut + " ");
+  Serial.print(statut);
 }
 
