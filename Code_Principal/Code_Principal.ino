@@ -163,13 +163,13 @@ void state() {
     if (statutT == RIGHT) {
       turnRight();
 
-      if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == HIGH) {
+      if (digitalRead(signalPinLg) ==LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
         statut = STRAIGHT;
       }
     } else if (statutT == LEFT) {
       turnLeft();
 
-      if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == HIGH) {
+      if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
         statut = STRAIGHT;
       } else {
         statut == PROBLEM;
