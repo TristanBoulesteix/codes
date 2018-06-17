@@ -183,8 +183,11 @@ void state() {
     } else if (statutT == LEFT) {
       turnLeft();
     }
-
-    statut == STRAIGHT;
+    if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
+      // avancement normal
+      moveForward();
+      statut = STRAIGHT;
+    }
     Serial.print(statut);
   }
   /*______________________________________________________________________________________________________________________________________________*/
