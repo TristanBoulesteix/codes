@@ -178,10 +178,8 @@ void state() {
       turnLeft();
     }
 
-    if (digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH) {
-      moveForward();
-      statut == STRAIGHT;
-    }
+    statut == STRAIGHT;
+    Serial.print(statut);
   } else {
     stopMotors();
   }
