@@ -6,9 +6,8 @@
 const int STRAIGHT = 100;
 const int TURN = 200;
 const int LEFT = 210;
-const int UP = 220;
-const int RIGHT = 230;
-const int DOWN = 240;
+const int RIGHT = 220;
+const int DOWN = 230;
 const int PROBLEM = 300;
 const int CORRECT = 400;
 
@@ -20,27 +19,6 @@ int signalPinLg = 7;
 int signalPinLd = 6;
 int statut = STRAIGHT;
 int statutT;
-
-
-int getNextRightDirection(int direction) {
-  direction = direction + 10;
-
-  if (direction > 240) {
-    return 210;
-  } else {
-    return direction;
-  }
-}
-
-int getNextLeftDirection(int direction) {
-  direction = direction - 10;
-
-  if (direction < 210) {
-    return 240;
-  } else {
-    return direction;
-  }
-}
 
 void moveForward() {
   Motor.speed(MOTOR1, 50);
@@ -189,10 +167,10 @@ void state() {
   if ( statut == CORRECT) {
     if (statutT == RIGHT)
     {
-      turnRight();
+      correctRight();
     } else if (statutT == LEFT)
     {
-      turnLeft();
+      correctLeft();
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
       // avancement normal
       moveForward();
