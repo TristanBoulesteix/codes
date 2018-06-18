@@ -11,6 +11,21 @@ typedef struct header{
 	unsigned int cheksum;
 }messageHeader;
 
+
+// Function from the Arduino forum
+//takes as input a packet whose check sum needs to be recalculated
+//and the size of the packet in bytes
+
+int* calcCheckSum (int* pack, int packSize) {
+ int sum = 0;
+ for (int i=0; i < (packSize-1); i++) {
+      sum = pack[i] + sum;
+      }
+ sum = last two digits of sum in hex;
+ pack[packSize-1] = 100 - sum;
+ return pack;
+}
+
 void setup() {
   Serial.begin(9600);
   vw_set_tx_pin(RF_TX_PIN);
