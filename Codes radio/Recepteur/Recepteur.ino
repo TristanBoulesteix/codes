@@ -1,11 +1,3 @@
-/**
-
-  Exemple de code pour la bibliothèque VirtualWire – Serveur d'envoi de texte
-
-*/
-
-
-
 #include <VirtualWire.h>
 
 
