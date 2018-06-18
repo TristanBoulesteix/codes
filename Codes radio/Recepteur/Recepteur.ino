@@ -1,5 +1,3 @@
-
-
 /**
 
   Exemple de code pour la bibliothèque VirtualWire – Serveur d'envoi de texte
@@ -11,7 +9,7 @@
 #include <VirtualWire.h>
 
 
-int RF_TX_PIN = 2;
+int RF_RX_PIN = 2;
 
 /**
    Exemple de code pour la bibliothèque VirtualWire – Serveur d'envoi de texte
@@ -21,7 +19,7 @@ int RF_TX_PIN = 2;
 
 void setup() {
   Serial.begin(9600);
-  vw_set_tx_pin(RF_TX_PIN);
+  vw_set_rx_pin(RF_RX_PIN);
   // Initialisation de la bibliothèque VirtualWire
   // Vous pouvez changez les broches RX/TX/PTT avant vw_setup() si nécessaire
   vw_setup(2000);
@@ -51,4 +49,3 @@ void loop() {
     Serial.println((char*) message); // Affiche le message
   }
 }
-
