@@ -4,8 +4,11 @@
  
 #include <VirtualWire.h>
 
+int RF_TX_PIN = 2;
+
 void setup() {
   Serial.begin(9600);
+  vw_set_tx_pin(RF_TX_PIN);
 
   // Initialisation de la bibliothèque VirtualWire
   // Vous pouvez changez les broches RX/TX/PTT avant vw_setup() si nécessaire

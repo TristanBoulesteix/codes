@@ -2,21 +2,22 @@
 
 /**
 
-* Exemple de code pour la bibliothèque VirtualWire – Serveur d'envoi de texte
+  Exemple de code pour la bibliothèque VirtualWire – Serveur d'envoi de texte
 
 */
 
- 
+
 
 #include <VirtualWire.h>
 
- 
+
+int RF_TX_PIN = 2;
 
 void setup() {
 
   Serial.begin(9600);
+  vw_set_tx_pin(RF_TX_PIN);
 
- 
 
   // Initialisation de la bibliothèque VirtualWire
 
@@ -26,13 +27,13 @@ void setup() {
 
   vw_rx_start(); // On peut maintenant recevoir des messages
 
- 
+
 
   Serial.println("Go !");
 
 }
 
- 
+
 
 void loop() {
 
@@ -42,33 +43,33 @@ void loop() {
 
   // N.B. La constante VW_MAX_MESSAGE_LEN est fournie par la lib VirtualWire
 
- 
+
 
   /*
 
-   La variable "taille_message" doit impérativement être remise à
+    La variable "taille_message" doit impérativement être remise à
 
-   la taille du buffer avant de pouvoir recevoir un message.
+    la taille du buffer avant de pouvoir recevoir un message.
 
-   Le plus simple est d'utiliser une variable locale pour ne pas
+    Le plus simple est d'utiliser une variable locale pour ne pas
 
-   avoir à réassigner la valeur à chaque début de loop().
+    avoir à réassigner la valeur à chaque début de loop().
 
-   */
+  */
 
- 
+
 
   // On attend de recevoir un message
 
   vw_wait_rx();
 
- 
+
 
   if (vw_get_message(message, &taille_message)) {
 
     // On copie le message, qu'il soit corrompu ou non
 
- 
+
 
     Serial.println((char*) message); // Affiche le message
 
