@@ -61,7 +61,8 @@ void state() {
     if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {
       //a long terme passé cette possibilité à recherche de ligne
       statut = STRAIGHT;
-      moveForward();
+      //moveForward();
+      stopMotors();
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
       // etat de redressement sur la ligne DROITE
       statut = CORRECT;
@@ -157,24 +158,34 @@ void state() {
   if (statut == TURN) {
     if (statutT == RIGHT) {
       turnRight();
+      if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
+        statut = STRAIGHT;
+        statutT = 0;
+      }
     } else if (statutT == LEFT) {
       turnLeft();
-    } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
-      statut = STRAIGHT;
-    }
+      if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
+        statut = STRAIGHT;
+        statutT = 0;
+      }
+    } 
   }
   /*______________________________________________________________________________________________________________________________________________*/
   if ( statut == CORRECT) {
     if (statutT == RIGHT)
     {
       correctRight();
+      if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW){
+        statut = STRAIGHT;
+        statutT = 0;
+      }
     } else if (statutT == LEFT)
     {
       correctLeft();
-    } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
-      // avancement normal
-      moveForward();
-      statut = STRAIGHT;
+      if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW){
+        statut = STRAIGHT;
+        statutT = 0;
+      }
     }
   }
   /*______________________________________________________________________________________________________________________________________________*/
