@@ -19,7 +19,7 @@ int signalPinLg = 7;
 int signalPinLd = 6;
 int statut = STRAIGHT;
 int statutT;
-
+int n = 0; 
 /*______________________________________________________________________________________________________________________________________________________________*/
 void moveForward() {
   Motor.speed(MOTOR1, 50);
@@ -60,8 +60,12 @@ void turnRight() {
 void state() {
   if (statut == STRAIGHT) {
     if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {//0000
-      //a long terme passé cette possibilité à recherche de ligne
+      n++;
       moveForward();
+      if (n>50){
+        stopMotors();
+      }
+      
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == HIGH) {//0001
       // etat de tourner à droite
       statut = TURN;
@@ -93,6 +97,7 @@ void state() {
         statutT = RIGHT;
     }else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {//0110
       // avancement normal
+      n=0;
       statut = STRAIGHT;
       moveForward();
     }else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == HIGH) {//0111
