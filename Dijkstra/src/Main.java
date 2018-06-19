@@ -27,27 +27,8 @@ public class Main {
 		// creation d'une instance de l'algorithme avec le graphe g0
 		Dijkstra beaulieuAutresStations= new Dijkstra(0,g0);
 		
-		
-		
-		// Calcul du plus court chemin avec l'algorithme de Dijkstra 
-		beaulieuAutresStations.calculePlusCourtChemin();
-		
-
-		
-//		// Affichage du temps de trajet
-int duree = beaulieuAutresStations.longueurChemin(11);
-		System.out.println("Le temps mini pour aller de beaulieu a Clemenceau est :"+duree);
-		
 		// Pour afficher le chemin le plus rapide pour aller de beaulieu a Clemenceau
-		beaulieuAutresStations.afficheChemin(11); // pour ça il faut un tableau de prédécesseur, il nous faudra un tableau de routage
-		//il nous faudrait créer un tableau R des prédecesseurs.
-		
-		
-		//Creation d'une nouvelle instance de l'algorithme avec un départ de Republique
-		Dijkstra republiqueAutresStations= new Dijkstra(7,g0);
-		republiqueAutresStations.calculePlusCourtChemin();
-		int duree3 = republiqueAutresStations.longueurChemin(3);
-		System.out.println("Le temps mini pour aller de republique a Clemenceau est :"+duree3);
+		beaulieuAutresStations.afficheChemin(11);
 	}
 
 }
