@@ -23,7 +23,7 @@ int calcCheckSum(String message) {
 
 messageHeader getHeader(byte* message, messageHeader head) {
   head.checksum = calcCheckSum(String((char*) message));
-  
+
   return head;
 }
 
@@ -49,11 +49,11 @@ void loop() {
     return; // Pas de message
   }
   message[len] = '\0'; // Ferme la chaine de caractères
-  
+
   head = getHeader(message, head);
-  
+
   byte* finalMessage = String(head.id) + String((char*) message) + String(head.checksum);
-  
+
   vw_send(message, len + 1); // On envoie le message
   vw_wait_tx(); // On attend la fin de l'envoi
 }
