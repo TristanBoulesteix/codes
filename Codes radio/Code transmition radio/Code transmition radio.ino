@@ -1,13 +1,9 @@
-/**
-   Exemple de code pour la bibliothèque VirtualWire – Client d'envoi de texte
-*/
-
 #include <VirtualWire.h>
 
 int RF_TX_PIN = 2;
 
 typedef struct header {
-  unsigned char id[4] = {6, 5, 0, 0};
+  int id = 6500;
   int checksum;
 } messageHeader;
 
@@ -23,7 +19,7 @@ int calcCheckSum(String message) {
 
 messageHeader getHeader(byte* message, messageHeader head) {
   head.checksum = calcCheckSum(String((char*) message));
-  
+
   return head;
 }
 
@@ -48,12 +44,17 @@ void loop() {
   if (!len) {
     return; // Pas de message
   }
-  message[len] = '\0'; // Ferme la chaine de caractères
-  
+
   head = getHeader(message, head);
-  
-  byte* finalMessage = String(head.id) + String((char*) message) + String(head.checksum);
-  
-  vw_send(message, len + 1); // On envoie le message
+
+  String finalMessage = String(head.id) + String((char*) message) + String(head.checksum);
+
+  finalMessage = finalMessage + '\0'; // Ferme la chaine de caractères
+
+  for (int i = 0; i < finalMessage.length(); i++) {
+    message[i] = finalMessage.charAt(i);
+  }
+
+  vw_send(message, finalMessage.length() + 1); // On envoie le message
   vw_wait_tx(); // On attend la fin de l'envoi
 }
