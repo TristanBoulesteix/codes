@@ -1,6 +1,7 @@
 #include <VirtualWire.h>
 
-int RF_TX_PIN = 2;
+int RF_TX_PIN = 5;
+int RF_RX_PIN = 2;
 
 typedef struct header {
   int id = 6500;
@@ -23,9 +24,17 @@ messageHeader getHeader(byte* message, messageHeader head) {
   return head;
 }
 
+void receiveMessage(){
+	byte message[VW_MAX_MESSAGE_LEN];
+	byte taille_message = VW_MAX_MESSAGE_LEN;
+}
+
 void setup() {
   Serial.begin(9600);
   vw_set_tx_pin(RF_TX_PIN);
+  vw_set_rx_pin(RF_RX_PIN);
+  
+  vw_rx_start();
 
   // Initialisation de la bibliothèque VirtualWire
   // Vous pouvez changez les broches RX/TX/PTT avant vw_setup() si nécessaire
