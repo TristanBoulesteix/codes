@@ -37,7 +37,7 @@ public class Graphe {
 			}
 			for (int j = 0 ; j<U.length ; j++){
 				if ((j<mat.length) && (i<mat.length)){
-					U[i][j] = mat [i][j];
+					U[i][j] = mat[i][j];
 				}
 				else {
 					U[i][j] = ALPHA_NOTDEF;
