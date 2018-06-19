@@ -19,53 +19,54 @@ int signalPinLg = 7;
 int signalPinLd = 6;
 int statut = STRAIGHT;
 int statutT;
-int n = 0; 
+int n = 0;
 /*______________________________________________________________________________________________________________________________________________________________*/
 void moveForward() {
-  Motor.speed(MOTOR1, 50);
-  Motor.speed(MOTOR2, 44);
-  Serial.println("moveForward");
+    Motor.speed(MOTOR1, 50);
+    Motor.speed(MOTOR2, 38);
+    Serial.println("moveForward");
 }
 
 void stopMotors() {
-  Motor.stop(MOTOR1);
-  Motor.stop(MOTOR2);
-  Serial.println("stop");
+    Motor.stop(MOTOR1);
+    Motor.stop(MOTOR2);
+    Serial.println("stop");
 }
 
 void correctRight() {
-  Motor.speed(MOTOR1, 50);
-  Motor.speed(MOTOR2, 04);
-  Serial.println("CR");
+    Motor.speed(MOTOR1, 50);
+    Motor.speed(MOTOR2, -38);
+    Serial.println("CR");
 }
 
 void correctLeft() {
-  Motor.speed(MOTOR1, 10);
-  Motor.speed(MOTOR2, 44);
-  Serial.println("CL");
+    Motor.speed(MOTOR1, -20);
+    Motor.speed(MOTOR2, 38);
+    Serial.println("CL");
 }
 
 void turnLeft() {
-  Motor.speed(MOTOR1, -100);
-  Motor.speed(MOTOR2, 50);
-  Serial.println("TL");
+    Motor.speed(MOTOR1, -100);
+    Motor.speed(MOTOR2, 50);
+    Serial.println("TL");
 }
 
 void turnRight() {
-  Motor.speed(MOTOR1, 50);
-  Motor.speed(MOTOR2, -100);
-  Serial.println("TR");
+    Motor.speed(MOTOR1, 50);
+    Motor.speed(MOTOR2, -100);
+    Serial.println("TR");
 }
 
 void state() {
   if (statut == STRAIGHT) {
     if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {//0000
+      // recherche de ligne
       n++;
       moveForward();
-      if (n>50){
-        stopMotors();
+      if (n > 100) {
+        statut = PROBLEM;
       }
-      
+
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == HIGH) {//0001
       // etat de tourner à droite
       statut = TURN;
@@ -74,10 +75,9 @@ void state() {
       // etat de redressement sur la ligne DROITE
       statut = CORRECT;
       statutT = RIGHT;
-    }else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == HIGH){//0011
+    } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == HIGH) { //0011
       //etat possible pour aller tout droit ou à droite
-      int randomNumber = random(0, 1);
-      Serial.printl(n);
+      int randomNumber = random(2);
       if (randomNumber == 0) {
         statut = STRAIGHT;
         //moveForward();
@@ -87,23 +87,22 @@ void state() {
       } else {
         statut = PROBLEM;
       }
-    }else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {//0100
+    } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {//0100
       // etat de redressement sur la ligne GAUCHE
       statut = CORRECT;
       statutT = LEFT;
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == HIGH) {//0101
       // tourner à droite
-        statut = TURN;
-        statutT = RIGHT;
-    }else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {//0110
+      statut = TURN;
+      statutT = RIGHT;
+    } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {//0110
       // avancement normal
-      n=0;
+      n = 0;
       statut = STRAIGHT;
       moveForward();
-    }else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == HIGH) {//0111
+    } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == HIGH) {//0111
       //etat de direction aléatoire entre tout droit et à droite
-      int randomNumber = random(0, 1);
-
+      int randomNumber = random(2);
       if (randomNumber == 0) {
         statut = STRAIGHT;
         //moveForward();
@@ -118,13 +117,12 @@ void state() {
       //etat de tourner à gauche
       statut = TURN;
       statutT = LEFT;
-    } else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == HIGH){//1001
+    } else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == HIGH) { //1001
       //etat de direction aléatoire entre à gauche et à droite
       statut = TURN;
 
-      int randomNumber = random(0, 1);
+      int randomNumber = random(2);
       // passe la statutT à la valeur trouvé avec l'aléatoire
-
       if (randomNumber == 0) {
         statutT = LEFT;
       } else if (randomNumber == 1) {
@@ -133,14 +131,13 @@ void state() {
         statut = PROBLEM;
       }
 
-    }else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {//1010
+    } else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {//1010
       //tourner à gauche
-        statut = TURN;
-        statutT = LEFT;
-    }else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {//1100
-      int randomNumber = random(0, 1);
+      statut = TURN;
+      statutT = LEFT;
+    } else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {//1100
+      int randomNumber = random(2);
       // passe la statutT à la valeur trouvé avec l'aléatoire
-
       if (randomNumber == 0) {
         statut = TURN;
         statutT = LEFT;
@@ -150,13 +147,12 @@ void state() {
       } else {
         statut = PROBLEM;
       }
-    }else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {//1110
+    } else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {//1110
       //etat de direction aléatoire entre à gauche et tout droit
 
 
-      int randomNumber = random(0, 1);
+      int randomNumber = random(2);
       // passe la statutT à la valeur trouvé avec l'aléatoire
-
       if (randomNumber == 0) {
         statut = TURN;
         statutT = LEFT;
@@ -167,13 +163,12 @@ void state() {
         statut = PROBLEM;
       }
 
-    } else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == HIGH){//1111
+    } else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == HIGH) { //1111
       //Etat de tourner à gauche ou à droite ou bien continué d'aller tout droit
       //Set le statut à TURN ou STRAIGHT statut
       //set le statutT à LEFT ou RIGHT uniquement si TURN est selectionné
 
-      int randomNumber = random(0, 2);
-
+      int randomNumber = random(3);
       if (randomNumber == 0) {
         statut = TURN;
         statutT = RIGHT;
@@ -192,43 +187,43 @@ void state() {
       statut = PROBLEM;
     }
   }
-  
+
   /*______________________________________________________________________________________________________________________________________________*/
   if (statut == TURN) {
     if (statutT == RIGHT) {
       turnRight();
       if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
-          statut = STRAIGHT;
-          statutT = 0;
+        statut = STRAIGHT;
+        statutT = 0;
       }
     } else if (statutT == LEFT) {
       turnLeft();
       if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
-          statut = STRAIGHT;
-          statutT = 0;
+        statut = STRAIGHT;
+        statutT = 0;
       }
-    } 
+    }
   }
-  
+
   /*______________________________________________________________________________________________________________________________________________*/
   if ( statut == CORRECT) {
     if (statutT == RIGHT)
     {
       correctRight();
-      if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW){
+      if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
         statut = STRAIGHT;
         statutT = 0;
       }
     } else if (statutT == LEFT)
     {
       correctLeft();
-      if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW){
+      if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
         statut = STRAIGHT;
         statutT = 0;
       }
     }
   }
-  
+
   /*______________________________________________________________________________________________________________________________________________*/
   if (statut == PROBLEM) {
     stopMotors();
@@ -248,7 +243,9 @@ void setup() {
 
 
 void loop() {
+  Serial.println("yo");
   state ();
-  Serial.print(statut);
+  //Serial.print(statut);
+  delay(200);
 }
 
