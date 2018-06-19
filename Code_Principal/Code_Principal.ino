@@ -22,8 +22,8 @@ int statutT;
 
 /*______________________________________________________________________________________________________________________________________________________________*/
 void moveForward() {
-  Motor.speed(MOTOR1, 60);
-  Motor.speed(MOTOR2, 54);
+  Motor.speed(MOTOR1, 50);
+  Motor.speed(MOTOR2, 44);
   Serial.println("moveForward");
 }
 
@@ -34,14 +34,14 @@ void stopMotors() {
 }
 
 void correctRight() {
-  Motor.speed(MOTOR1, 60);
-  Motor.speed(MOTOR2, 24);
+  Motor.speed(MOTOR1, 50);
+  Motor.speed(MOTOR2, 04);
   Serial.println("CR");
 }
 
 void correctLeft() {
-  Motor.speed(MOTOR1, 30);
-  Motor.speed(MOTOR2, 54);
+  Motor.speed(MOTOR1, 10);
+  Motor.speed(MOTOR2, 44);
   Serial.println("CL");
 }
 
@@ -61,9 +61,7 @@ void state() {
   if (statut == STRAIGHT) {
     if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {//0000
       //a long terme passé cette possibilité à recherche de ligne
-      statut = STRAIGHT;
       moveForward();
-      //stopMotors();
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == HIGH) {//0001
       // etat de tourner à droite
       statut = TURN;
@@ -90,19 +88,9 @@ void state() {
       statut = CORRECT;
       statutT = LEFT;
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == HIGH) {//0101
-      // etat pour le redressement ou tourner à droite
-      int randomNumber = random(0, 1);
-
-      if (randomNumber == 0) {
-        statut = CORRECT;
-        statutT = LEFT;
-        //moveForward();
-      } else if (randomNumber == 1) {
+      // tourner à droite
         statut = TURN;
         statutT = RIGHT;
-      } else {
-        statut = PROBLEM;
-      }
     }else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {//0110
       // avancement normal
       statut = STRAIGHT;
@@ -141,19 +129,9 @@ void state() {
       }
 
     }else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {//1010
-      // etat pour le redressement ou tourner à gauche
-      int randomNumber = random(0, 1);
-
-      if (randomNumber == 0) {
-        statut = CORRECT;
-        statutT = RIGHT;
-        //moveForward();
-      } else if (randomNumber == 1) {
+      //tourner à gauche
         statut = TURN;
         statutT = LEFT;
-      } else {
-        statut = PROBLEM;
-      }
     }else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {//1100
       int randomNumber = random(0, 1);
       // passe la statutT à la valeur trouvé avec l'aléatoire
