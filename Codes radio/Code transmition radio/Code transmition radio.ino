@@ -35,6 +35,8 @@ void setup() {
 }
 
 void loop() {
+ // code to sent data
+	
   byte message[VW_MAX_MESSAGE_LEN];
   // N.B. La constante VW_MAX_MESSAGE_LEN est fournie par la lib VirtualWire
   messageHeader head;
@@ -47,7 +49,7 @@ void loop() {
 
   head = getHeader(message, head);
 
-  String finalMessage = String(head.id) + String((char*) message) + String(head.checksum);
+  String finalMessage = String(head.id) + "|" + String((char*) message) + "|" + String(head.checksum);
 
   finalMessage = finalMessage + '\0'; // Ferme la chaine de caractères
 
