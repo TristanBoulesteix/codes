@@ -77,7 +77,7 @@ void state() {
     }else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == HIGH){//0011
       //etat possible pour aller tout droit ou à droite
       int randomNumber = random(0, 1);
-
+      Serial.printl(n);
       if (randomNumber == 0) {
         statut = STRAIGHT;
         //moveForward();
@@ -198,14 +198,14 @@ void state() {
     if (statutT == RIGHT) {
       turnRight();
       if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
-        statut = STRAIGHT;
-        statutT = 0;
+          statut = STRAIGHT;
+          statutT = 0;
       }
     } else if (statutT == LEFT) {
       turnLeft();
       if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
-        statut = STRAIGHT;
-        statutT = 0;
+          statut = STRAIGHT;
+          statutT = 0;
       }
     } 
   }
