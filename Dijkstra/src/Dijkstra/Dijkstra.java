@@ -9,7 +9,7 @@ public class Dijkstra {
 	public final static int ALPHA_NOTDEF = -999;// on met final psk c'est une constante
 	private int x0;
 	private int[] S;// ensemble de sommets dont les distances les plus courtes à la source sont
-					// connues au départ seulement Source
+					// connues au d�part seulement Source
 	private int[] R;// ensemble des prédécesseur des sommets de 0 à N-1;
 	private Graphe g0;
 	private int[] D;// tableau des valeurs du meilleur raccourci pour se rendre à chaque sommet
@@ -126,10 +126,11 @@ public class Dijkstra {
 		int source = x0;
 		int antecedant = i;
 		ArrayList<Integer> lesNoeudsIntermediaires = new ArrayList<Integer>();
-		;
 		lesNoeudsIntermediaires.add(i);
 		System.out.println("Chemin de " + x0 + " � " + i + ":");
 		while (antecedant != source) {
+			System.out.println(antecedant);
+			System.out.println(source);
 			lesNoeudsIntermediaires.add(antecedant);
 			antecedant = R[antecedant];
 
@@ -146,9 +147,7 @@ public class Dijkstra {
 		int source = x0;
 		int antecedant = i;
 		ArrayList<Integer> lesNoeudsIntermediaires = new ArrayList<Integer>();
-		;
 		lesNoeudsIntermediaires.add(i);
-		System.out.println("Chemin de " + x0 + " � " + i + ":");
 		while (antecedant != source) {
 			lesNoeudsIntermediaires.add(antecedant);
 			antecedant = R[antecedant];
