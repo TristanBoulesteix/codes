@@ -1,0 +1,399 @@
+<?xml version="1.0"?>
+<flowgorithm fileversion="2.11">
+    <attributes>
+        <attribute name="name" value=""/>
+        <attribute name="authors" value="Utilisateur"/>
+        <attribute name="about" value=""/>
+        <attribute name="saved" value="2018-06-20 11:31:19 "/>
+        <attribute name="created" value="VXRpbGlzYXRldXI7UEMtUE9SVEFCTEU7MjAxOC0wNi0xODsiMTE6MDk6MTUgIjszMTcw"/>
+        <attribute name="edited" value="VXRpbGlzYXRldXI7UEMtUE9SVEFCTEU7MjAxOC0wNi0yMDsiMTE6MzE6MTkgIjs1OzMyNzQ="/>
+    </attributes>
+    <function name="Main" type="None" variable="">
+        <parameters/>
+        <body>
+            <assign variable="STRAIGHT" expression="100"/>
+            <assign variable="TURN" expression="200"/>
+            <assign variable="LEFT" expression="210"/>
+            <assign variable="RIGHT" expression="220"/>
+            <assign variable="DOWN" expression="230"/>
+            <assign variable="CORRECT" expression="300"/>
+            <assign variable="PROBLEM" expression="404"/>
+            <assign variable="signalPinC1" expression="8"/>
+            <assign variable="signelPinC2" expression="4"/>
+            <assign variable="signalPinLg" expression="7"/>
+            <assign variable="signalPinLd" expression="6"/>
+            <assign variable="statut" expression="STRAIGHT"/>
+            <declare name="statutT" type="Integer" array="False" size=""/>
+            <assign variable="n" expression="0"/>
+            <call expression="setup&#13;&#10;"/>
+            <call expression="loop&#13;&#10;"/>
+        </body>
+    </function>
+    <function name="correctLeft" type="None" variable="">
+        <parameters/>
+        <body>
+            <call expression="Motor.speed(MOTOR1, -20)"/>
+            <call expression="Motor.speed(MOTOR2, 38)"/>
+        </body>
+    </function>
+    <function name="correctRight" type="None" variable="">
+        <parameters/>
+        <body>
+            <call expression="Motor.speed(MOTOR1, 50)"/>
+            <call expression="Motor.speed(MOTOR2, -38)"/>
+        </body>
+    </function>
+    <function name="loop" type="None" variable="">
+        <parameters/>
+        <body>
+            <while expression="TRUE">
+                <call expression="state()"/>
+            </while>
+        </body>
+    </function>
+    <function name="moveForward" type="None" variable="">
+        <parameters/>
+        <body>
+            <call expression="Motor.speed(MOTOR1, 50)"/>
+            <call expression="Motor.speed(MOTOR2, 38)"/>
+        </body>
+    </function>
+    <function name="setup" type="None" variable="">
+        <parameters/>
+        <body>
+            <call expression="Motor.begin(I2C_ADDRESS)"/>
+            <call expression="pinMode(signalPinC1, INPUT)"/>
+            <call expression="pinMode(signalPinC2, INPUT)"/>
+            <call expression="pinMode(signalPinLg, INPUT)"/>
+            <call expression="pinMode(signalPinLd, INPUT)"/>
+            <call expression="Serial.begin(9600)"/>
+            <call expression="randomSeed(analogRead(2))"/>
+            <call expression="delay(200)"/>
+        </body>
+    </function>
+    <function name="state" type="None" variable="">
+        <parameters/>
+        <body>
+            <if expression="statut == STRAIGHT">
+                <then>
+                    <if expression="digitalRead(signalPinLg) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == LOW">
+                        <then>
+                            <assign variable="n" expression="n+1"/>
+                            <call expression="moveForward()"/>
+                            <if expression="n &gt; 100">
+                                <then>
+                                    <assign variable="statut" expression="PROBLEM"/>
+                                </then>
+                                <else/>
+                            </if>
+                        </then>
+                        <else>
+                            <if expression="digitalRead(signalPinLg) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == HIGH">
+                                <then>
+                                    <assign variable="statut" expression="TURN"/>
+                                    <assign variable="statutT" expression="RIGHT"/>
+                                </then>
+                                <else>
+                                    <if expression="digitalRead(signalPinLg) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == LOW">
+                                        <then>
+                                            <assign variable="statut" expression="CORRECT"/>
+                                            <assign variable="statutT" expression="RIGHT"/>
+                                        </then>
+                                        <else>
+                                            <if expression="digitalRead(signalPinLg) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == HIGH">
+                                                <then>
+                                                    <assign variable="randomNumber" expression="random(2)"/>
+                                                    <if expression="randomNumber == 0">
+                                                        <then>
+                                                            <assign variable="statut" expression="STRAIGHT"/>
+                                                        </then>
+                                                        <else>
+                                                            <if expression="randomNumber == 1">
+                                                                <then>
+                                                                    <assign variable="statut" expression="TURN"/>
+                                                                    <assign variable="statutT" expression="RIGHT"/>
+                                                                </then>
+                                                                <else>
+                                                                    <assign variable="statut" expression="PROBLEM"/>
+                                                                </else>
+                                                            </if>
+                                                        </else>
+                                                    </if>
+                                                </then>
+                                                <else>
+                                                    <if expression="digitalRead(signalPinLg) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == LOW">
+                                                        <then>
+                                                            <assign variable="statut" expression="CORRECT"/>
+                                                            <assign variable="statutT" expression="LEFT"/>
+                                                        </then>
+                                                        <else>
+                                                            <if expression="digitalRead(signalPinLg) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == HIGH">
+                                                                <then>
+                                                                    <assign variable="statut" expression="TURN"/>
+                                                                    <assign variable="statutT" expression="RIGHT"/>
+                                                                </then>
+                                                                <else>
+                                                                    <if expression="digitalRead(signalPinLg) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == LOW">
+                                                                        <then>
+                                                                            <assign variable="n" expression="0"/>
+                                                                            <assign variable="statut" expression="STRAIGHT"/>
+                                                                            <call expression="moveForward()"/>
+                                                                        </then>
+                                                                        <else>
+                                                                            <if expression="digitalRead(signalPinLg) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == HIGH">
+                                                                                <then>
+                                                                                    <assign variable="randomNumber" expression="random(2)"/>
+                                                                                    <if expression="randomNumber == 0">
+                                                                                        <then>
+                                                                                            <assign variable="statut" expression="STRAIGHT"/>
+                                                                                        </then>
+                                                                                        <else>
+                                                                                            <if expression="randomNumber == 1">
+                                                                                                <then>
+                                                                                                    <assign variable="statut" expression="TURN"/>
+                                                                                                    <assign variable="statutT" expression="RIGHT"/>
+                                                                                                </then>
+                                                                                                <else>
+                                                                                                    <assign variable="statut" expression="PROBLEM"/>
+                                                                                                </else>
+                                                                                            </if>
+                                                                                        </else>
+                                                                                    </if>
+                                                                                </then>
+                                                                                <else>
+                                                                                    <if expression="digitalRead(signalPinLg) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == LOW">
+                                                                                        <then>
+                                                                                            <assign variable="statut" expression="TURN"/>
+                                                                                            <assign variable="statutT" expression="LEFT"/>
+                                                                                        </then>
+                                                                                        <else>
+                                                                                            <if expression="digitalRead(signalPinLg) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == HIGH">
+                                                                                                <then>
+                                                                                                    <assign variable="statut" expression="TURN"/>
+                                                                                                    <assign variable="randomNumber" expression="random(2)"/>
+                                                                                                    <if expression="randomNumber == 0">
+                                                                                                        <then>
+                                                                                                            <assign variable="statutT" expression="LEFT"/>
+                                                                                                        </then>
+                                                                                                        <else>
+                                                                                                            <if expression="randomNumber == 1">
+                                                                                                                <then>
+                                                                                                                    <assign variable="statutT" expression="RIGHT"/>
+                                                                                                                </then>
+                                                                                                                <else>
+                                                                                                                    <assign variable="statut" expression="PROBLEM"/>
+                                                                                                                </else>
+                                                                                                            </if>
+                                                                                                        </else>
+                                                                                                    </if>
+                                                                                                </then>
+                                                                                                <else>
+                                                                                                    <if expression="digitalRead(signalPinLg) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == LOW">
+                                                                                                        <then>
+                                                                                                            <assign variable="statut" expression="TURN"/>
+                                                                                                            <assign variable="statutT" expression="LEFT"/>
+                                                                                                        </then>
+                                                                                                        <else>
+                                                                                                            <if expression="digitalRead(signalPinLg) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == LOW">
+                                                                                                                <then>
+                                                                                                                    <assign variable="randomNumber" expression="random(2)"/>
+                                                                                                                    <if expression="randomNumber == 0">
+                                                                                                                        <then>
+                                                                                                                            <assign variable="statut" expression="TURN"/>
+                                                                                                                            <assign variable="statutT" expression="LEFT"/>
+                                                                                                                        </then>
+                                                                                                                        <else>
+                                                                                                                            <if expression="randomNumber == 1">
+                                                                                                                                <then>
+                                                                                                                                    <assign variable="statut" expression="STRAIGHT"/>
+                                                                                                                                    <call expression="moveForward()"/>
+                                                                                                                                </then>
+                                                                                                                                <else>
+                                                                                                                                    <assign variable="statut" expression="PROBLEM"/>
+                                                                                                                                </else>
+                                                                                                                            </if>
+                                                                                                                        </else>
+                                                                                                                    </if>
+                                                                                                                </then>
+                                                                                                                <else>
+                                                                                                                    <if expression="digitalRead(signalPinLg) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == LOW">
+                                                                                                                        <then>
+                                                                                                                            <assign variable="randomNumber" expression="random(2)"/>
+                                                                                                                            <if expression="randomNumber == 0">
+                                                                                                                                <then>
+                                                                                                                                    <assign variable="statut" expression="TURN"/>
+                                                                                                                                    <assign variable="statutT" expression="LEFT"/>
+                                                                                                                                </then>
+                                                                                                                                <else>
+                                                                                                                                    <if expression="randomNumber == 1">
+                                                                                                                                        <then>
+                                                                                                                                            <assign variable="statut" expression="STRAIGHT"/>
+                                                                                                                                            <call expression="moveForward()"/>
+                                                                                                                                        </then>
+                                                                                                                                        <else>
+                                                                                                                                            <assign variable="statut" expression="PROBLEM"/>
+                                                                                                                                        </else>
+                                                                                                                                    </if>
+                                                                                                                                </else>
+                                                                                                                            </if>
+                                                                                                                        </then>
+                                                                                                                        <else>
+                                                                                                                            <if expression="digitalRead(signalPinLg) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == HIGH">
+                                                                                                                                <then>
+                                                                                                                                    <assign variable="randomNumber" expression="random(3)"/>
+                                                                                                                                    <if expression="randomNumber == 0">
+                                                                                                                                        <then>
+                                                                                                                                            <assign variable="statut" expression="TURN"/>
+                                                                                                                                            <assign variable="statutT" expression="RIGHT"/>
+                                                                                                                                        </then>
+                                                                                                                                        <else>
+                                                                                                                                            <if expression="randomNumber == 1">
+                                                                                                                                                <then>
+                                                                                                                                                    <assign variable="statut" expression="STRAIGHT"/>
+                                                                                                                                                    <call expression="moveForward()"/>
+                                                                                                                                                </then>
+                                                                                                                                                <else>
+                                                                                                                                                    <if expression="randomNumber == 2">
+                                                                                                                                                        <then>
+                                                                                                                                                            <assign variable="statut" expression="TURN"/>
+                                                                                                                                                            <assign variable="statutT" expression="LEFT"/>
+                                                                                                                                                        </then>
+                                                                                                                                                        <else>
+                                                                                                                                                            <assign variable="statut" expression="PROBLEM"/>
+                                                                                                                                                        </else>
+                                                                                                                                                    </if>
+                                                                                                                                                </else>
+                                                                                                                                            </if>
+                                                                                                                                        </else>
+                                                                                                                                    </if>
+                                                                                                                                </then>
+                                                                                                                                <else>
+                                                                                                                                    <assign variable="statut" expression="PROBLEM"/>
+                                                                                                                                </else>
+                                                                                                                            </if>
+                                                                                                                        </else>
+                                                                                                                    </if>
+                                                                                                                </else>
+                                                                                                            </if>
+                                                                                                        </else>
+                                                                                                    </if>
+                                                                                                </else>
+                                                                                            </if>
+                                                                                        </else>
+                                                                                    </if>
+                                                                                </else>
+                                                                            </if>
+                                                                        </else>
+                                                                    </if>
+                                                                </else>
+                                                            </if>
+                                                        </else>
+                                                    </if>
+                                                </else>
+                                            </if>
+                                        </else>
+                                    </if>
+                                </else>
+                            </if>
+                        </else>
+                    </if>
+                </then>
+                <else>
+                    <if expression="statut == TURN">
+                        <then>
+                            <if expression="statutT == RIGHT">
+                                <then>
+                                    <call expression="turnRight()"/>
+                                    <if expression="digitalRead(signalPinLg) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == LOW">
+                                        <then>
+                                            <assign variable="statut" expression="STRAIGHT"/>
+                                            <assign variable="statutT" expression="0"/>
+                                        </then>
+                                        <else/>
+                                    </if>
+                                </then>
+                                <else>
+                                    <if expression="statutT == LEFT">
+                                        <then>
+                                            <call expression="turnLeft()"/>
+                                            <if expression="digitalRead(signalPinLg) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == LOW">
+                                                <then>
+                                                    <assign variable="statut" expression="STRAIGHT"/>
+                                                    <assign variable="statutT" expression="0"/>
+                                                </then>
+                                                <else/>
+                                            </if>
+                                        </then>
+                                        <else/>
+                                    </if>
+                                </else>
+                            </if>
+                        </then>
+                        <else>
+                            <if expression="statut == CORRECT">
+                                <then>
+                                    <if expression="statutT == RIGHT">
+                                        <then>
+                                            <call expression="correctRight()"/>
+                                            <if expression="digitalRead(signalPinLg) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == LOW">
+                                                <then>
+                                                    <assign variable="statut" expression="STRAIGHT"/>
+                                                    <assign variable="statutT" expression="0"/>
+                                                </then>
+                                                <else/>
+                                            </if>
+                                        </then>
+                                        <else>
+                                            <if expression="statutT == LEFT">
+                                                <then>
+                                                    <call expression="correctLeft()"/>
+                                                    <if expression="digitalRead(signalPinLg) == LOW &#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC1) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinC2) == HIGH&#13;&#10;&amp;&amp; &#13;&#10;digitalRead(signalPinLd) == LOW">
+                                                        <then>
+                                                            <assign variable="statut" expression="STRAIGHT"/>
+                                                            <assign variable="statutT" expression="0"/>
+                                                        </then>
+                                                        <else/>
+                                                    </if>
+                                                </then>
+                                                <else/>
+                                            </if>
+                                        </else>
+                                    </if>
+                                </then>
+                                <else>
+                                    <if expression="statut == PROBLEM">
+                                        <then>
+                                            <call expression="stopMotors()"/>
+                                        </then>
+                                        <else/>
+                                    </if>
+                                </else>
+                            </if>
+                        </else>
+                    </if>
+                </else>
+            </if>
+        </body>
+    </function>
+    <function name="stopMotors" type="None" variable="">
+        <parameters/>
+        <body>
+            <call expression="Motor.stop(MOTOR1)"/>
+            <call expression="Motor.stop(MOTOR2)"/>
+        </body>
+    </function>
+    <function name="turnLeft" type="None" variable="">
+        <parameters/>
+        <body>
+            <call expression="Motor.speed(MOTOR1, -100)"/>
+            <call expression="Motor.speed(MOTOR2, 50)"/>
+        </body>
+    </function>
+    <function name="turnRight" type="None" variable="">
+        <parameters/>
+        <body>
+            <call expression="Motor.speed(MOTOR1, 50)"/>
+            <call expression="Motor.speed(MOTOR2, -100)"/>
+        </body>
+    </function>
+</flowgorithm>
