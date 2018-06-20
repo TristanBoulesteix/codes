@@ -35,12 +35,12 @@ void stopMotors() {
 
 void correctRight() {
     Motor.speed(MOTOR1, 50);
-    Motor.speed(MOTOR2, -38);
+    Motor.speed(MOTOR2, 18);
     Serial.println("CR");
 }
 
 void correctLeft() {
-    Motor.speed(MOTOR1, -20);
+    Motor.speed(MOTOR1, 20);
     Motor.speed(MOTOR2, 38);
     Serial.println("CL");
 }
