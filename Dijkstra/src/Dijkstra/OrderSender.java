@@ -38,10 +38,6 @@ public class OrderSender {
 			finalOrder += compareCoordinate(origin, finalPath.get(j));
 			origin = finalPath.get(j);
 		}
-
-		System.out.println(finalOrder);
-
-		System.out.println(getX(7));
 	}
 
 	private Order compareCoordinate(int origin, int destination) {
