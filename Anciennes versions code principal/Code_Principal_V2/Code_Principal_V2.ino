@@ -23,7 +23,7 @@ int n = 0;
 /*______________________________________________________________________________________________________________________________________________________________*/
 void moveForward() {
     Motor.speed(MOTOR1, 50);
-    Motor.speed(MOTOR2, 38);
+    Motor.speed(MOTOR2, 44);
     Serial.println("moveForward");
 }
 
@@ -35,13 +35,13 @@ void stopMotors() {
 
 void correctRight() {
     Motor.speed(MOTOR1, 50);
-    Motor.speed(MOTOR2, 18);
+    Motor.speed(MOTOR2, -44);
     Serial.println("CR");
 }
 
 void correctLeft() {
-    Motor.speed(MOTOR1, 20);
-    Motor.speed(MOTOR2, 38);
+    Motor.speed(MOTOR1, -50);
+    Motor.speed(MOTOR2, 44);
     Serial.println("CL");
 }
 
@@ -246,6 +246,5 @@ void loop() {
   Serial.println("yo");
   state ();
   //Serial.print(statut);
-  delay(200);
 }
 
