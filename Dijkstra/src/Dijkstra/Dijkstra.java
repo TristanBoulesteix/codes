@@ -127,10 +127,7 @@ public class Dijkstra {
 		int antecedant = i;
 		ArrayList<Integer> lesNoeudsIntermediaires = new ArrayList<Integer>();
 		lesNoeudsIntermediaires.add(i);
-		System.out.println("Chemin de " + x0 + " ра " + i + ":");
 		while (antecedant != source) {
-			System.out.println(antecedant);
-			System.out.println(source);
 			lesNoeudsIntermediaires.add(antecedant);
 			antecedant = R[antecedant];
 
