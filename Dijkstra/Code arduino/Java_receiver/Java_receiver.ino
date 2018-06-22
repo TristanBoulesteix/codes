@@ -1,3 +1,5 @@
+#include <Grove_I2C_Motor_Driver.h>
+
 char inputBuffer[10];
 
 void setup() {
@@ -13,6 +15,8 @@ void loop() {
       Serial.print("I got this ->");
       Serial.print(inputBuffer);
       Serial.println("<-");
+      Motor.speed(MOTOR1, 50);
+      Motor.speed(MOTOR2, 38);
     }
   }
 }
