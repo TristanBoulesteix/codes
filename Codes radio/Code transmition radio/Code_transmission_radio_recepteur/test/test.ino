@@ -3,6 +3,15 @@ String id = "";
 String checksum = "";
 String instruction;
 
+  int calcCheckSum(String message) {
+  int checkSum;
+  for (int i = 0; i < message.length(); i++) {
+    checkSum = checkSum + (((int) message.charAt(i)) * i);
+  }
+  return checkSum;
+}
+
+
 void setup() {
   Serial.begin(9600);
   Serial.println("salut");
@@ -10,7 +19,7 @@ void setup() {
 
 void loop() {
   if (header != "") {
-    Serial.println("Message recu");
+  Serial.println("Message recu");
     int a = 0;
     for ( int i = 0; i < header.length(); i++) {
       if (header.charAt(i) == '|') {
@@ -31,5 +40,6 @@ void loop() {
   Serial.println(id);
   Serial.println(instruction);
   Serial.println(checksum);
-  delay(30000);
+
+  delay(30000);  
 }
