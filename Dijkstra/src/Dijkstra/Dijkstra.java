@@ -9,7 +9,7 @@ public class Dijkstra {
 	public final static int ALPHA_NOTDEF = -999;// on met final psk c'est une constante
 	private int x0;
 	private int[] S;// ensemble de sommets dont les distances les plus courtes à la source sont
-					// connues au d�part seulement Source
+					// connues au départ seulement Source
 	private int[] R;// ensemble des prédécesseur des sommets de 0 à N-1;
 	private Graphe g0;
 	private int[] D;// tableau des valeurs du meilleur raccourci pour se rendre à chaque sommet
