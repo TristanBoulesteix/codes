@@ -4,6 +4,19 @@ const int RF_TX_PIN = 2;
 
 char inputBuffer[10];
 
+typedef struct header {
+  int id = 6500;
+  int checksum;
+} messageHeader;
+
+int calcCheckSum(String message) {
+  int checkSum;
+  for (int i = 0; i < message.length(); i++) {
+    checkSum = checkSum + (((int) message.charAt(i)) * i);
+  }
+  return checkSum;
+}
+
 void setup() {
   Serial.begin(9600);
   vw_set_tx_pin(RF_TX_PIN);
