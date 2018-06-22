@@ -1,7 +1,10 @@
 import java.util.Scanner;
 
+import Arduino.ArduinoConnector;
 import Dijkstra.Dijkstra;
+import Dijkstra.Direction;
 import Dijkstra.Graphe;
+import Dijkstra.OrderSender;
 
 public class Main {
 	public static void main(String[] args) {
@@ -48,11 +51,9 @@ public class Main {
 
 		dijkstra.afficheChemin(destination);
 
-		// Pour afficher le chemin le plus rapide pour aller de beaulieu a Clemenceau
-		// OrderSender sender = new OrderSender(dijkstra.getChemin(destination),
-		// Direction.UP);
+		OrderSender sender = new OrderSender(dijkstra.getChemin(destination), Direction.UP);
 
-		// ArduinoConnector.sendToArduino(sender.getFinalOrder());
+		ArduinoConnector.sendToArduino(sender.getFinalOrder());
 	}
 
 }
