@@ -9,7 +9,7 @@ String instruction = " ";
 
 //Structure
 typedef struct header {
-  int id = " ";
+  int id;
   int checksum;
 } messageHeader;
 
@@ -36,11 +36,11 @@ void setup() {
 
 void loop() {
   messageHeader comparatif;
-  String header= " ";
+  String header="6900|DROITE|3654";
   byte taille_message = VW_MAX_MESSAGE_LEN;
   // N.B. La constante VW_MAX_MESSAGE_LEN est fournie par la lib VirtualWire
   // On attend de recevoir un message
-  vw_wait_rx();
+  //vw_wait_rx();
   if (vw_get_message((byte*)&header, &taille_message)) {
     Serial.println("Message recu");
     for( int i=0; i<header.length();i++){
@@ -56,6 +56,9 @@ void loop() {
       }else if (a==2){
         comparatif.checksum+=header.charAt(i);
       }
+      Serial.println(comparatif.id);
+      Serial.println(instruction);
+      Serial.println(comparatif.checksum);
     }
   }else {
     Serial.println("Message corrompu"); // Affiche le message

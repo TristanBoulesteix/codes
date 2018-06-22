@@ -66,9 +66,9 @@ void state() {
       // recherche de ligne
       cherche += 1;
       moveForward();
-      if (cherche > 50) {
-        statut = PROBLEM;
-      }
+      //if (cherche > 50) {
+       // statut = PROBLEM;
+      //}
 
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == HIGH) {//0001
       // etat de tourner à droite
