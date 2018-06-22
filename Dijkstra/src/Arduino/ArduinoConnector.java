@@ -10,10 +10,10 @@ import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
 
 public class ArduinoConnector {
-	static Enumeration portList;
-	static CommPortIdentifier portId;
-	static SerialPort serialPort;
-	static OutputStream outputStream;
+	private static Enumeration portList;
+	private static CommPortIdentifier portId;
+	private static SerialPort serialPort;
+	private static OutputStream outputStream;
 
 	public static void sendToArduino(String messageString) {
 		portList = CommPortIdentifier.getPortIdentifiers();
