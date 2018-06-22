@@ -9,10 +9,6 @@ public class OrderSender {
 	private Direction currentDirection;
 	private String finalOrder = "";
 
-	public String getFinalOrder() {
-		return finalOrder;
-	}
-
 	private int map[][] = { { 13, 14, INFINITE, INFINITE, INFINITE, 15 },
 			{ INFINITE, 11, INFINITE, INFINITE, 12, INFINITE }, { 8, INFINITE, INFINITE, INFINITE, 9, 10 },
 			{ 5, 6, INFINITE, 7, INFINITE, INFINITE }, { 0, 1, INFINITE, 2, 3, 4 } };
@@ -187,4 +183,9 @@ public class OrderSender {
 			return orderCharacter;
 		}
 	}
+
+	public String getFinalOrder() {
+		return finalOrder;
+	}
+
 }

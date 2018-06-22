@@ -29,28 +29,27 @@ public class ArduinoConnector {
 						serialPort = (SerialPort) portId.open("SimpleWriteApp", 2000);
 						Thread.sleep(4000);
 					} catch (PortInUseException | InterruptedException e) {
-						System.out.println("err");
+						e.printStackTrace();
 					}
 					try {
 						outputStream = serialPort.getOutputStream();
 					} catch (IOException e) {
-						System.out.println("err1");
+						e.printStackTrace();
 					}
 					try {
 						serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1,
 								SerialPort.PARITY_NONE);
 					} catch (UnsupportedCommOperationException e) {
-						System.out.println("err2");
+						e.printStackTrace();
 					}
 					try {
 						outputStream.write(messageString.getBytes());
-						System.out.println(messageString);
 
 						outputStream.close();
 						serialPort.close();
 
 					} catch (IOException e) {
-						System.out.println("err3");
+						e.printStackTrace();
 					}
 				}
 			}
