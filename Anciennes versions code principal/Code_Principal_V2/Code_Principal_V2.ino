@@ -84,7 +84,8 @@ void state() {
       //etat possible pour aller tout droit ou à droite
       int randomNumber = random(2);
       if (randomNumber == 0) {
-        statut = STRAIGHT;
+        statut = CORRECT;
+        statutT = RIGHT;
         //moveForward();
       } else if (randomNumber == 1) {
         statut = TURN;
@@ -99,9 +100,18 @@ void state() {
       statutT = LEFT;
 
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == HIGH) {//0101
-      // tourner à droite
-      statut = TURN;
-      statutT = RIGHT;
+      // tourner à droite ou corriger la trajectoire et continuer tout droit
+    int randomNumber = random(2);
+      if (randomNumber == 0) {
+        statut = CORRECT;
+        statutT = LEFT;
+        //moveForward();
+      } else if (randomNumber == 1) {
+        statut = TURN;
+        statutT = RIGHT;
+      } else {
+        statut = PROBLEM;
+      }
 
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {//0110
       // avancement normal
@@ -146,19 +156,28 @@ void state() {
       }
 
     } else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {//1010
-      //tourner à gauche
-      statut = TURN;
-      statutT = LEFT;
+      //tourner à gauche ou corriger la trajectoire
+      int randomNumber = random(2);
+      if (randomNumber == 0) {
+        statut = CORRECT;
+        statutT = RIGHT;
+        //moveForward();
+      } else if (randomNumber == 1) {
+        statut = TURN;
+        statutT = LEFT;
+      } else {
+        statut = PROBLEM;
+      }
 
     } else if (digitalRead(signalPinLg) == HIGH && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {//1100
+      //tourner à gauche ou corriger la trajectoire à gauche
       int randomNumber = random(2);
-      // passe la statutT à la valeur trouvé avec l'aléatoire
       if (randomNumber == 0) {
         statut = TURN;
         statutT = LEFT;
       } else if (randomNumber == 1) {
-        statut = STRAIGHT;
-        moveForward();
+        statut = CORRECT;
+        statutT = LEFT;
       } else {
         statut = PROBLEM;
       }
@@ -202,20 +221,21 @@ void state() {
   }
 
   /*______________________________________________________________________________________________________________________________________________*/
-  if (statut == TURN && tourner == 0) {
-    tourner = 1;
-    if (statutT == RIGHT) {
+  if (statut == TURN) {
+    if (statutT == RIGHT && tourner == 0) {
       turnRight();
       if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
         statut = STRAIGHT;
         statutT = 0;
+        tourner = 1;
       }
 
-    } else if (statutT == LEFT) {
+    } else if (statutT == LEFT && tourner == 0) {
       turnLeft();
       if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
         statut = STRAIGHT;
         statutT = 0;
+        tourner = 1;
       }
     }
   }
@@ -225,6 +245,7 @@ void state() {
     if (statutT == RIGHT)
     {
       correctRight();
+      turn++;
       if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
         statut = STRAIGHT;
         statutT = 0;
@@ -233,6 +254,7 @@ void state() {
     } else if (statutT == LEFT)
     {
       correctLeft();
+      turn++;
       if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
         statut = STRAIGHT;
         statutT = 0;
