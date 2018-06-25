@@ -21,10 +21,11 @@ void setup() {
   Serial.begin(9600);
   vw_set_tx_pin(RF_TX_PIN);
   vw_setup(2000);
+  Serial.println("go !");
 }
 
 void loop() {
-  String message;
+  char* message;
   messageHeader head;
 
   while (true) {
@@ -34,9 +35,6 @@ void loop() {
       delay(5000);
     }
   }
-
-  message = String(inputBuffer);
-  message = head.id + "|" + message + "|" + String(calcCheckSum(message)) + "\0";
 
   vw_send((byte *) &message, sizeof(message));
   vw_wait_tx();
