@@ -44,6 +44,7 @@ public class ArduinoConnector {
 					}
 					try {
 						outputStream.write(messageString.getBytes());
+						System.out.println(messageString);
 
 						outputStream.close();
 						serialPort.close();
