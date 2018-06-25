@@ -25,6 +25,7 @@ void setup() {
 
 void loop() {
   String message;
+  messageHeader head;
 
   while (true) {
     if (Serial.available() > 0) {
@@ -33,6 +34,9 @@ void loop() {
       delay(5000);
     }
   }
+
+  message = String(inputBuffer);
+  message = head.id + "|" + message + "|" + String(calcCheckSum(message));
 
   vw_send((byte *) &message, sizeof(message));
   vw_wait_tx();
