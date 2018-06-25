@@ -36,7 +36,7 @@ void loop() {
   }
 
   message = String(inputBuffer);
-  message = head.id + "|" + message + "|" + String(calcCheckSum(message));
+  message = head.id + "|" + message + "|" + String(calcCheckSum(message)) + "\0";
 
   vw_send((byte *) &message, sizeof(message));
   vw_wait_tx();
