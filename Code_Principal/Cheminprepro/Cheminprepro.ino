@@ -18,15 +18,18 @@ int signalPinC1 = 8;
 int signalPinC2 = 4;
 int signalPinLg = 7;
 int signalPinLd = 6;
-int statut = LISTEN;
+int statut = STRAIGHT;
 int statutT;
-int n = 0;
+int cherche = 0;
 int check;
+int turn =0;
+int tourner=0;
+int index = 0; 
 
 //Structure
 typedef struct header {
   String id;
-  String instruction;
+  String instruction="LLL";
   String checksum;
 } messageHeader;
 
@@ -106,10 +109,13 @@ void doInstruction(int type) {
     statut = TURN;
     statutT = RIGHT;
   }
-
   index ++;
+  if (index> sizeof(comparatif.instruction)){
+    statut=PROBLEM;
+  }
 }
 
+/*______________________________________________________________________________________________________________________________________________________________*/
 void state() {
   if (statut == LISTEN) {
     byte header[VW_MAX_MESSAGE_LEN];
@@ -159,7 +165,8 @@ void state() {
     comparatif.instruction = "";
 
   }
-}else if (statut == STRAIGHT) {
+/*______________________________________________________________________________________________________________________________________________*/
+if (statut == STRAIGHT) {
   if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == LOW) {//0000
     // recherche de ligne
     cherche += 1;
