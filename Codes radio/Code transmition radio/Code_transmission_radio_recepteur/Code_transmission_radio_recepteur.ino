@@ -2,6 +2,7 @@
 
 //Integer
 int RF_RX_PIN = 2;
+int check;
 
 // String
 String instruction = " ";
@@ -10,10 +11,12 @@ String instruction = " ";
 //Structure
 typedef struct header {
   String id;
+  String instruction;
   String checksum;
 } messageHeader;
 
-
+//Variable
+messageHeader comparatif;
 
 int calcCheckSum(String message) {
   int checkSum;
@@ -35,8 +38,7 @@ void setup() {
 }
 
 void loop() {
-  messageHeader comparatif;
-  String header= " ";
+  String header= "";
   byte taille_message = VW_MAX_MESSAGE_LEN;
   // N.B. La constante VW_MAX_MESSAGE_LEN est fournie par la lib VirtualWire
   // On attend de recevoir un message
@@ -52,13 +54,25 @@ void loop() {
       if (a==0){
         comparatif.id+=header.charAt(i);
       }else if (a==1){
-        instruction+= header.charAt(i);
+        comparatif.instruction+= header.charAt(i);
       }else if (a==2){
         comparatif.checksum+=header.charAt(i);
       }
+    }
+    check = calcCheckSum(comparatif.instruction);
+    if (comparatif.id == String(6500)){
+      if (comparatif.checksum==String(check))
+      {
+        Serial.println("Message Correct");
+        Serial.println(comparatif.instruction);
+      }else{
+        Serial.println("Error different checksum");
+        Serial.println(comparatif.checksum);
+        
+      }
+    }else{
+      Serial.println("Error different ID");
       Serial.println(comparatif.id);
-      Serial.println(instruction);
-      Serial.println(comparatif.checksum);
     }
   }else {
     Serial.println("Message corrompu"); // Affiche le message
