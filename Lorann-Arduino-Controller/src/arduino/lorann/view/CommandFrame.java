@@ -33,6 +33,7 @@ public class CommandFrame extends JFrame implements KeyListener {
 		this.pack();
 		this.setLocationRelativeTo(null);
 		this.setFocusable(true);
+		this.addKeyListener(this);
 	}
 
 	private void initComponents() {
@@ -82,7 +83,6 @@ public class CommandFrame extends JFrame implements KeyListener {
 		default:
 			break;
 		}
-
 	}
 
 	@Override
