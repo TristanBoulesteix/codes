@@ -1,13 +1,12 @@
 package arduino.lorann.view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
-
-import arduino.lorann.arduino.ArduinoConnector;
 
 public class CommandFrame extends JFrame implements KeyListener {
 
@@ -16,12 +15,12 @@ public class CommandFrame extends JFrame implements KeyListener {
 	 */
 	private static final long serialVersionUID = -5853832954211297232L;
 
-	private static final Dimension panelDimension = new Dimension(200, 200);
+	private static final Dimension panelDimension = new Dimension(1000, 1000);
 
-	private CommandPanel panelLeft;
-	private CommandPanel panelUp;
-	private CommandPanel panelDown;
-	private CommandPanel panelRight;
+	private ControlButton buttonLeft;
+	private ControlButton buttonUp;
+	private ControlButton buttonDown;
+	private ControlButton buttonRight;
 
 	public CommandFrame() {
 		this.setTitle("Commands");
@@ -29,6 +28,7 @@ public class CommandFrame extends JFrame implements KeyListener {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(new BorderLayout());
 		this.setPreferredSize(new Dimension(1200, 1000));
+		this.setBackground(Color.CYAN);
 		this.initComponents();
 		this.pack();
 		this.setLocationRelativeTo(null);
@@ -37,21 +37,21 @@ public class CommandFrame extends JFrame implements KeyListener {
 	}
 
 	private void initComponents() {
-		this.panelLeft = new CommandPanel();
+		this.buttonLeft = new ControlButton("LEFT", this, "L");
 		this.setPreferredSize(panelDimension);
-		this.getContentPane().add(panelLeft, BorderLayout.WEST);
+		this.getContentPane().add(buttonLeft, BorderLayout.WEST);
 
-		this.panelRight = new CommandPanel();
+		this.buttonRight = new ControlButton("RIGHT", this, "R");
 		this.setPreferredSize(panelDimension);
-		this.getContentPane().add(panelRight, BorderLayout.EAST);
+		this.getContentPane().add(buttonRight, BorderLayout.EAST);
 
-		this.panelUp = new CommandPanel();
+		this.buttonUp = new ControlButton("UP", this, "U");
 		this.setPreferredSize(panelDimension);
-		this.getContentPane().add(panelUp, BorderLayout.NORTH);
+		this.getContentPane().add(buttonUp, BorderLayout.NORTH);
 
-		this.panelDown = new CommandPanel();
+		this.buttonDown = new ControlButton("DOWN", this, "D");
 		this.setPreferredSize(panelDimension);
-		this.getContentPane().add(panelDown, BorderLayout.SOUTH);
+		this.getContentPane().add(buttonDown, BorderLayout.SOUTH);
 	}
 
 	@Override
@@ -65,19 +65,19 @@ public class CommandFrame extends JFrame implements KeyListener {
 
 		switch (keyDetected) {
 		case KeyEvent.VK_UP:
-			ArduinoConnector.sendToArduino("A");
+			this.buttonUp.doClick();
 			break;
 
 		case KeyEvent.VK_LEFT:
-			ArduinoConnector.sendToArduino("L");
+			this.buttonLeft.doClick();
 			break;
 
 		case KeyEvent.VK_RIGHT:
-			ArduinoConnector.sendToArduino("R");
+			this.buttonRight.doClick();
 			break;
 
 		case KeyEvent.VK_DOWN:
-			ArduinoConnector.sendToArduino("B");
+			this.buttonDown.doClick();
 			break;
 
 		default:
