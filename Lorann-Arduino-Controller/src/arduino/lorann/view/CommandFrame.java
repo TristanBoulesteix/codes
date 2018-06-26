@@ -1,4 +1,4 @@
-package arduino.lorann;
+package arduino.lorann.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 import javax.swing.JFrame;
 
 import arduino.lorann.arduino.ArduinoConnector;
-import arduino.lorann.view.CommandPanel;
 
 public class CommandFrame extends JFrame implements KeyListener {
 
