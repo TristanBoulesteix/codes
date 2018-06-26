@@ -47,7 +47,7 @@ public class ArduinoConnector {
 
 					try {
 						serialPort = (SerialPort) portId.open("SimpleWriteApp", 2000);
-						Thread.sleep(4000);
+						Thread.sleep(1550);
 					} catch (PortInUseException | InterruptedException e) {
 						e.printStackTrace();
 					}

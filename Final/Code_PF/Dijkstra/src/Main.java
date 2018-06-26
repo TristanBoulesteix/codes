@@ -39,6 +39,8 @@ public class Main {
 		OrderSender sender = new OrderSender(dijkstra.getChemin(destination), Direction.UP);
 
 		ArduinoConnector.sendToArduino(sender.getFinalOrder());
+
+		scan.close();
 	}
 
 }
