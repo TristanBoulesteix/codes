@@ -9,9 +9,11 @@ public class OrderSender {
 	private Direction currentDirection;
 	private String finalOrder = "";
 
-	private int map[][] = { { 13, 14, INFINITE, INFINITE, INFINITE, 15 },
-			{ INFINITE, 11, INFINITE, INFINITE, 12, INFINITE }, { 8, INFINITE, INFINITE, INFINITE, 9, 10 },
-			{ 5, 6, INFINITE, 7, INFINITE, INFINITE }, { 0, 1, INFINITE, 2, 3, 4 } };
+	private int map[][] = { { 3, INFINITE, INFINITE, INFINITE, 2, 1, 0 }, { 8, INFINITE, 7, INFINITE, 6, 5, 4 },
+			{ INFINITE, 13, 12, 11, 10, INFINITE, 9 },
+			{ INFINITE, INFINITE, INFINITE, INFINITE, INFINITE, INFINITE, INFINITE },
+			{ INFINITE, 16, 15, 14, INFINITE, INFINITE, INFINITE },
+			{ 18, INFINITE, 17, INFINITE, INFINITE, INFINITE, INFINITE } };
 	/*
 	 * 
 	 * { 0, 1, INFINITE, 2, 3, 4 }, { 5, 6, INFINITE, 7, INFINITE, INFINITE }, { 8,
@@ -127,6 +129,7 @@ public class OrderSender {
 
 				case RIGHT:
 					orderToSend = Order.RIGHT;
+					break;
 
 				case DOWN:
 					orderToSend = Order.STRAIGHT;

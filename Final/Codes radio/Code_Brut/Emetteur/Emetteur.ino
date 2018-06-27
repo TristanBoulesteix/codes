@@ -1,7 +1,3 @@
-/**
- * Exemple de code pour la bibliothèque VirtualWire – Client d'envoi de texte
- */
- 
 #include <VirtualWire.h>
 
 int RF_TX_PIN = 2;
