@@ -18,19 +18,19 @@ int signalPinC1 = 8;
 int signalPinC2 = 4;
 int signalPinLg = 7;
 int signalPinLd = 6;
-int statut = LISTEN;
+int statut = STRAIGHT;
 int statutT;
 int cherche = 0;
-int check;
+int check = 0;
 int turn = 0;
 int tourner = 0;
 int index = 0;
 
 //Structure
 typedef struct header {
-  String id;
-  String instruction = "LLL";
-  String checksum;
+  String id = "";
+  char instruction = '';
+  String checksum = "";
 } messageHeader;
 
 //header
@@ -44,55 +44,48 @@ String msg;
 void moveForward() {
   Motor.speed(MOTOR1, 50);
   Motor.speed(MOTOR2, 44);
-  Serial.println("moveForward");
 }
 
 void stopMotors() {
   Motor.stop(MOTOR1);
   Motor.stop(MOTOR2);
-  Serial.println("stop");
 }
 
 void correctRight() {
   Motor.speed(MOTOR1, 50);
   Motor.speed(MOTOR2, -44);
-  Serial.println("CR");
 }
 
 void correctLeft() {
   Motor.speed(MOTOR1, -50);
   Motor.speed(MOTOR2, 44);
-  Serial.println("CL");
 }
 
 void turnLeft() {
   Motor.speed(MOTOR1, -100);
   Motor.speed(MOTOR2, 50);
-  Serial.println("TL");
 }
 
 void turnRight() {
   Motor.speed(MOTOR1, 50);
   Motor.speed(MOTOR2, -100);
-  Serial.println("TR");
 }
 
 int calcCheckSum(String message) {
-  int checkSum;
+  int checkSum = 0;
   for (int s = 0; s < message.length(); s++) {
     checkSum = checkSum + (((int) message.charAt(s)) * (s + 1));
   }
-  Serial.println(checkSum);
   return checkSum;
 }
 
 void doInstruction(int type) {
-  if (comparatif.instruction.charAt(index) == 'A' && type == 0) {
+  if (comparatif.instruction.charAt(index) == 'S' && type == 0) {
     statut = STRAIGHT;
-  } else if (comparatif.instruction.charAt(index) == 'A' && type == 1) {
+  }else if (comparatif.instruction.charAt(index) == 'S' && type == 1) {
     statut = CORRECT;
     statutT = LEFT;
-  } else if (comparatif.instruction.charAt(index) == 'A' && type == 2) {
+  }else if (comparatif.instruction.charAt(index) == 'S' && type == 2) {
     statut = CORRECT;
     statutT = RIGHT;
   }else if (comparatif.instruction.charAt(index) == 'H') {
@@ -104,11 +97,15 @@ void doInstruction(int type) {
     statut = TURN;
     statutT = RIGHT;
   }
-  index ++;
-  if (index > sizeof(comparatif.instruction)) {
-    statut = PROBLEM;
+  if (index < (sizeof(comparatif.instruction))) {
+    index ++;
+  } else {
+    stopMotors();
   }
+
+
 }
+
 
 /*______________________________________________________________________________________________________________________________________________________________*/
 void state() {
@@ -119,10 +116,9 @@ void state() {
     // On attend de recevoir un message
     vw_wait_rx();
     if (vw_get_message(header, &taille_message)) {
-      Serial.println("Message recu");
       msg = String((char*)header);
-      Serial.println(msg);
       int a = 0;
+	  String tempInstruction = "";
       for ( int i = 0; i < msg.length(); i++) {
         if (msg.charAt(i) == '|') {
           a++;
@@ -130,8 +126,13 @@ void state() {
         }
         if (a == 0) {
           comparatif.id += msg.charAt(i);
-          Serial.println(comparatif.id);
         } else if (a == 1) {
+		  tempInstruction = msg.charAt(i);
+		  
+		  if (sizeof(tempInstruction) > 1){
+			  statut = LISTEN;
+			  break;
+		  }
           comparatif.instruction += msg.charAt(i);
         } else if (a == 2) {
           comparatif.checksum += msg.charAt(i);
@@ -139,26 +140,15 @@ void state() {
       }
       check = calcCheckSum(comparatif.instruction);
       if (comparatif.id == String(6500)) {
-        if (comparatif.checksum == String(check))
-        {
-          Serial.println("Message Correct");
-          Serial.println(comparatif.instruction);
+        if (comparatif.checksum == String(check)){
+          statut = STRAIGHT;
         } else {
-          Serial.println("Error different checksum");
-          Serial.println(comparatif.checksum);
-
+          comparatif.id = "";
+          comparatif.checksum = "";
+          comparatif.instruction = "";
         }
-      } else {
-        Serial.println("Error different ID");
-        Serial.println(comparatif.id);
       }
-    } else {
-      Serial.println("Message corrompu"); // Affiche le message
     }
-    comparatif.id = "";
-    comparatif.checksum = "";
-    comparatif.instruction = "";
-
   }
   /*______________________________________________________________________________________________________________________________________________*/
   if (statut == STRAIGHT) {
@@ -166,9 +156,9 @@ void state() {
       // recherche de ligne
       cherche += 1;
       moveForward();
-      //if (cherche > 50) {
-      // statut = PROBLEM;
-      //}
+      if (cherche > 50) {
+        statut = PROBLEM;
+      }
 
     } else if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == LOW && digitalRead(signalPinC2) == LOW && digitalRead(signalPinLd) == HIGH) {//0001
       // etat de tourner à droite
@@ -196,9 +186,8 @@ void state() {
       // avancement normal
       cherche = 0;
       turn += 1;
-      statut = STRAIGHT;
       moveForward();
-      if (tourner == 1 && turn > 80) {
+      if (turn > 150) {
         tourner = 0;
         turn = 0;
       }
@@ -241,25 +230,24 @@ void state() {
     if (statutT == RIGHT && tourner == 0) {
       turnRight();
       if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
-        statut = STRAIGHT;
         statutT = 0;
         tourner = 1;
+        statut = STRAIGHT;
       }
 
     } else if (statutT == LEFT && tourner == 0) {
       turnLeft();
       if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
-        statut = STRAIGHT;
         statutT = 0;
         tourner = 1;
+        statut = STRAIGHT;
       }
     }
   }
 
   /*______________________________________________________________________________________________________________________________________________*/
   if ( statut == CORRECT) {
-    if (statutT == RIGHT)
-    {
+    if (statutT == RIGHT) {
       correctRight();
       turn++;
       if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
@@ -267,8 +255,7 @@ void state() {
         statutT = 0;
       }
 
-    } else if (statutT == LEFT)
-    {
+    } else if (statutT == LEFT) {
       correctLeft();
       turn++;
       if (digitalRead(signalPinLg) == LOW && digitalRead(signalPinC1) == HIGH && digitalRead(signalPinC2) == HIGH && digitalRead(signalPinLd) == LOW) {
@@ -285,16 +272,18 @@ void state() {
 }
 /*______________________________________________________________________________________________________________________________________________________________*/
 void setup() {
+  Serial.begin(9600);
   Motor.begin(I2C_ADDRESS);
   pinMode(signalPinC1, INPUT);
   pinMode(signalPinC2, INPUT);
   pinMode(signalPinLg, INPUT);
   pinMode(signalPinLd, INPUT);
-  Serial.begin(9600);
   vw_set_rx_pin(RF_RX_PIN);
+
+
   // Initialisation de la bibliothèque VirtualWire
   // Vous pouvez changez les broches RX/TX/PTT avant vw_setup() si nécessaire
-  vw_setup(2000);
+  vw_setup(255);
   vw_rx_start(); // On peut maintenant recevoir des messages
   delay(200);
 }
