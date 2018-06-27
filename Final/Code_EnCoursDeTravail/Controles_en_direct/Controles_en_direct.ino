@@ -29,7 +29,7 @@ int index = 0;
 //Structure
 typedef struct header {
   String id = "";
-  char instruction = '';
+  String instruction = "";
   String checksum = "";
 } messageHeader;
 
@@ -82,18 +82,18 @@ int calcCheckSum(String message) {
 void doInstruction(int type) {
   if (comparatif.instruction.charAt(index) == 'S' && type == 0) {
     statut = STRAIGHT;
-  }else if (comparatif.instruction.charAt(index) == 'S' && type == 1) {
+  } else if (comparatif.instruction.charAt(index) == 'S' && type == 1) {
     statut = CORRECT;
     statutT = LEFT;
-  }else if (comparatif.instruction.charAt(index) == 'S' && type == 2) {
+  } else if (comparatif.instruction.charAt(index) == 'S' && type == 2) {
     statut = CORRECT;
     statutT = RIGHT;
-  }else if (comparatif.instruction.charAt(index) == 'H') {
+  } else if (comparatif.instruction.charAt(index) == 'H') {
     statut = STRAIGHT;
-  }else if (comparatif.instruction.charAt(index) == 'L') {
+  } else if (comparatif.instruction.charAt(index) == 'L') {
     statut = TURN;
     statutT = LEFT;
-  }else if (comparatif.instruction.charAt(index) == 'R') {
+  } else if (comparatif.instruction.charAt(index) == 'R') {
     statut = TURN;
     statutT = RIGHT;
   }
@@ -101,6 +101,7 @@ void doInstruction(int type) {
     index ++;
   } else {
     stopMotors();
+    statut = LISTEN;
   }
 
 
@@ -110,6 +111,9 @@ void doInstruction(int type) {
 /*______________________________________________________________________________________________________________________________________________________________*/
 void state() {
   if (statut == LISTEN) {
+    comparatif.id = "";
+    comparatif.checksum = "";
+    comparatif.instruction = "";
     byte header[VW_MAX_MESSAGE_LEN];
     byte taille_message = VW_MAX_MESSAGE_LEN;
     // N.B. La constante VW_MAX_MESSAGE_LEN est fournie par la lib VirtualWire
@@ -118,7 +122,7 @@ void state() {
     if (vw_get_message(header, &taille_message)) {
       msg = String((char*)header);
       int a = 0;
-	  String tempInstruction = "";
+      String tempInstruction = "";
       for ( int i = 0; i < msg.length(); i++) {
         if (msg.charAt(i) == '|') {
           a++;
@@ -127,12 +131,12 @@ void state() {
         if (a == 0) {
           comparatif.id += msg.charAt(i);
         } else if (a == 1) {
-		  tempInstruction = msg.charAt(i);
-		  
-		  if (sizeof(tempInstruction) > 1){
-			  statut = LISTEN;
-			  break;
-		  }
+          tempInstruction = msg.charAt(i);
+
+          if (sizeof(tempInstruction) > 1) {
+            statut = LISTEN;
+            break;
+          }
           comparatif.instruction += msg.charAt(i);
         } else if (a == 2) {
           comparatif.checksum += msg.charAt(i);
@@ -140,7 +144,7 @@ void state() {
       }
       check = calcCheckSum(comparatif.instruction);
       if (comparatif.id == String(6500)) {
-        if (comparatif.checksum == String(check)){
+        if (comparatif.checksum == String(check)) {
           statut = STRAIGHT;
         } else {
           comparatif.id = "";
