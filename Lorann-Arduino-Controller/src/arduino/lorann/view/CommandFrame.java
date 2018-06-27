@@ -45,11 +45,11 @@ public class CommandFrame extends JFrame implements KeyListener {
 		this.setPreferredSize(panelDimension);
 		this.getContentPane().add(buttonRight, BorderLayout.EAST);
 
-		this.buttonUp = new ControlButton("UP", this, "U");
+		this.buttonUp = new ControlButton("STRAIGHT", this, "S");
 		this.setPreferredSize(panelDimension);
 		this.getContentPane().add(buttonUp, BorderLayout.NORTH);
 
-		this.buttonDown = new ControlButton("DOWN", this, "D");
+		this.buttonDown = new ControlButton("BACK", this, "H");
 		this.setPreferredSize(panelDimension);
 		this.getContentPane().add(buttonDown, BorderLayout.SOUTH);
 	}
