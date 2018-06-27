@@ -114,14 +114,6 @@ public class Dijkstra {
 		return D[i];
 	}
 
-	// fonction à définir min
-	private int min(int i, int j) {
-		if (i <= j)
-			return i;
-		else
-			return j;
-	}
-
 	public void afficheChemin(int i) {
 		int source = x0;
 		int antecedant = i;

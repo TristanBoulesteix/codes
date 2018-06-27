@@ -12,7 +12,7 @@ void setup() {
 
   // Initialisation de la bibliothèque VirtualWire
   // Vous pouvez changez les broches RX/TX/PTT avant vw_setup() si nécessaire
-  vw_setup(2000);
+  vw_setup(255);
   
   Serial.println("Go !"); 
 }
