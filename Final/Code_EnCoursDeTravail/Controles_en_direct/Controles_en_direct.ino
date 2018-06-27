@@ -18,7 +18,7 @@ int signalPinC1 = 8;
 int signalPinC2 = 4;
 int signalPinLg = 7;
 int signalPinLd = 6;
-int statut = STRAIGHT;
+int statut = LISTEN;
 int statutT;
 int cherche = 0;
 int check;
@@ -89,23 +89,18 @@ int calcCheckSum(String message) {
 void doInstruction(int type) {
   if (comparatif.instruction.charAt(index) == 'A' && type == 0) {
     statut = STRAIGHT;
-  }
-  if (comparatif.instruction.charAt(index) == 'A' && type == 1) {
+  } else if (comparatif.instruction.charAt(index) == 'A' && type == 1) {
     statut = CORRECT;
     statutT = LEFT;
-  }
-  if (comparatif.instruction.charAt(index) == 'A' && type == 2) {
+  } else if (comparatif.instruction.charAt(index) == 'A' && type == 2) {
     statut = CORRECT;
     statutT = RIGHT;
-  }
-  else if (comparatif.instruction.charAt(index) == 'H') {
+  }else if (comparatif.instruction.charAt(index) == 'H') {
     statut = STRAIGHT;
-  }
-  else if (comparatif.instruction.charAt(index) == 'L') {
+  }else if (comparatif.instruction.charAt(index) == 'L') {
     statut = TURN;
     statutT = LEFT;
-  }
-  else if (comparatif.instruction.charAt(index) == 'R') {
+  }else if (comparatif.instruction.charAt(index) == 'R') {
     statut = TURN;
     statutT = RIGHT;
   }
