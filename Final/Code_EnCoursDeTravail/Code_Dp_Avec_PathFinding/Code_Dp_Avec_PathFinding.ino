@@ -83,11 +83,11 @@ void doInstruction(int type) {
   if (comparatif.instruction.charAt(index) == 'S' && type == 0) {
     statut = STRAIGHT;
   }
-  if (comparatif.instruction.charAt(index) == 'S' && type == 1) {
+  else if (comparatif.instruction.charAt(index) == 'S' && type == 1) {
     statut = CORRECT;
     statutT = LEFT;
   }
-  if (comparatif.instruction.charAt(index) == 'S' && type == 2) {
+  else if (comparatif.instruction.charAt(index) == 'S' && type == 2) {
     statut = CORRECT;
     statutT = RIGHT;
   }
