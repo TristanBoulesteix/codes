@@ -18,7 +18,7 @@ int signalPinC1 = 8;
 int signalPinC2 = 4;
 int signalPinLg = 7;
 int signalPinLd = 6;
-int statut = STRAIGHT;
+int statut = LISTEN;
 int statutT;
 int cherche = 0;
 int check = 0;
