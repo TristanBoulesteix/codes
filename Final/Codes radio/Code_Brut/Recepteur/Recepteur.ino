@@ -14,7 +14,7 @@ void setup() {
   vw_set_rx_pin(RF_RX_PIN);
   // Initialisation de la bibliothèque VirtualWire
   // Vous pouvez changez les broches RX/TX/PTT avant vw_setup() si nécessaire
-  vw_setup(2000);
+  vw_setup(255);
   vw_rx_start(); // On peut maintenant recevoir des messages
 
   Serial.println("Go !");
